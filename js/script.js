@@ -34,13 +34,37 @@ function play() {
     grid.innerHTML = '';
     
     // # FASE PREPARATIVA
+    // Settare le bombe
     const bomb = '💣' ;
     const TOTAL_BOMBS = 16 ;
     console.log(bomb);
     console.log(TOTAL_BOMBS);
 
+    // Raccolgo il val dalla tendina
     const level = document.getElementById('level').value;
     console.log(level);
+
+    // Calcolo in base al lvl quante celle renderizzare
+    let totalCells;
+    let cellsPerRow;
+
+    switch (level) {
+        case 'easy':
+        totalCells = 100; // 10
+        break;
+        case 'hard':
+        totalCells = 49; // 7
+        break;
+        default:
+        totalCells = 81; // 9
+    }
+    
+    // Radice quadrata per calcolare le celle
+    cellsPerRow = Math.sqrt(totalCells);
+    console.log(cellsPerRow);
+
+    // Calcolo il numero massimo di tentativi
+    const MAX_ATTEMPTS = totalCells - TOTAL_BOMBS;
 }
 
 
@@ -53,5 +77,5 @@ const grid = document.getElementById('grid');
 // ! ----------------------------
 // ! ESECUZIONE VERA E PROPRIA
 // ! ----------------------------
-
+// Prendo il bottone e aggancio event listener
 playButton.addEventListener('click', play);
