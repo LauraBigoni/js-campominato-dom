@@ -17,14 +17,10 @@ BONUS:
 2- quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
 */
 
-// # FUNZIONI
-function getRandomNumber(min, max, list) {
-    let randNumber;
-    do {
-        randNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-    } while (list.includes(randNumber));
-    return randNumber;
-}
+// # RANDOM NUM FUNCTION
+function getRandomNumber(min, max) {
+    Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 function play() {
     // Cambio testo al bottone
@@ -35,10 +31,9 @@ function play() {
 
     // # FASE PREPARATIVA
     // Settare le bombe
-    const bomb = '💣';
+    let attempts = 0;
+    // const bomb = '💣';
     const TOTAL_BOMBS = 16;
-    console.log(bomb);
-    console.log(TOTAL_BOMBS);
 
     // Raccolgo il val dalla tendina
     const level = document.getElementById('level').value;
@@ -65,47 +60,100 @@ function play() {
 
     // Inserisco una variabile per contare il punteggio
     const MAX_ATTEMPTS = totalCells - TOTAL_BOMBS;
-}
-function generateBombs(totalBombs, bomb) {
-    // Genero le bombe
-    const bombs = [];
-    while (bombs.lenght < totalBombs) {
-        const bomb = '💣';
-        bombs.push(bomb);
-    }
-    return bombs;
-}
+    console.log(MAX_ATTEMPTS);
 
-function generateGrid(cellsNumber, cellsPerRow, bombs) {
-    // Renderizzo la griglia eassegno la classe
-    for (let i = 1; i <= cellsNumber; i++) {
-        const cell = generateCell(i, cellsPerRow);
 
-        cell.addEventListener('click', (e) => onCellClick(e.target, bombs, i));
+    // # FUNZIONI
+    function generateBombs(totalBombs, totalNumbers) {
+        // Genero le bombe
+        let bombs = [];
 
-        grid.appendChild(cell);
-    }
-}
+        while (bombs.length < totalBombs) {
+            let rndNumber = getRandomNumber(1, totalNumbers);
+            if (!bombs.includes(rndNumber)) {
+                bombs.push(rndNumber);
+            }
+        }
+        return bombs;
+    };
 
-function generateCell(number, cellPerRow) {
-    // Genero le celle
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    cell.innerHTML = number;
-    const sideLenght = `calc(100% / ${cellsPerRow})`;
-    cell.style.width = sideLenght;
-    cell.style.height = sideLenght;
+    function gameOver(bombs, points, isDefeat) {
+        //Coloriamo le bombe
+        showBombs(bombs);
 
-    return cell;
-}
+        // Creo elemento per il messaggio
+        const messageElement = document.createElement('h3')
+        messageElement.className = 'message';
+
+        // Decido il testo
+        const messageText = isDefeat ? `Peccato, hai perso! Punteggio : ${points}` : 'Hai vinto! Gioca ancora..';
+        messageElement.innerText = messageText;
+
+        // Mostro l'elemento
+        grid.appendChild(messageElement);
+    };
+
+    function showBombs(bombs) {
+        const cells = document.querySelectorAll('.cell');
+        for (let i = 0; i < cells.lenght; i++) {
+            const cell = cells[i];
+            const cellNumber = parseInt(cell.innerText);
+            if (bombs.inlcludes(cellNumber)) cell.classList.add('bomb');
+        }
+    };
+
+    function onCellClick(clickedCell, bombs, number) {
+        // Impedisce altri futuri click sulla cella
+        clickedCell.removeEventListener('click', onCellClick);
+
+        // Controllo se è una bomba
+        if (bombs.includes(number)) {
+            gameOver(bombs, attempts, true)
+        } else {
+            clickedCell.classList.add('safe');
+            attempts++;
+
+            if (attempts === MAX_ATTEMPTS) {
+                gameOver(bombs, attempts, false)
+            }
+        }
+    };
+
+    function generateGrid(cellsNumber, cellsPerRow, bombs) {
+        // Renderizzo la griglia eassegno la classe
+        for (let i = 1; i <= cellsNumber; i++) {
+            const cell = generateCell(i, cellsPerRow);
+
+            cell.addEventListener('click', (e) => onCellClick(e.target, bombs, i));
+
+            grid.appendChild(cell);
+        }
+    };
+
+    function generateCell(number, cellsPerRow) {
+        // Genero le celle
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.innerHTML = number;
+        const sideLenght = `calc(100% / ${cellsPerRow})`;
+        cell.style.width = sideLenght;
+        cell.style.height = sideLenght;
+
+        return cell;
+    };
+
+    // ! ----------------------------
+    // ! ESECUZIONE VERA E PROPRIA
+    // ! ----------------------------
+    const bombs = generateBombs(TOTAL_BOMBS, totalCells);
+    console.log(bombs);
+    generateGrid(totalCells, cellsPerRow, bombs);
+};
 
 // # RECUPERO GLI ELEMENTI
 const playButton = document.getElementById('play');
 const choice = document.getElementById('choice');
 const grid = document.getElementById('grid');
 
-// ! ----------------------------
-// ! ESECUZIONE VERA E PROPRIA
-// ! ----------------------------
-// Prendo il bottone e aggancio event listener
+// # Prendo il bottone e aggancio event listener
 playButton.addEventListener('click', play);
