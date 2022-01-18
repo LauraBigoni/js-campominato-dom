@@ -1,0 +1,35 @@
+# FASE INIZIALE
+1- Prendo il bottone
+2- Aggancio un event listener ( funzione play())
+
+# DENTRO LA FUNZIONE play
+3- Cambio il testo del bottone 'Gioca' -> 'Ricomincia'
+4- Svuoto contenuto di #grid
+
+| FASE PREPARATIVA
+5- Settare che le bombe sono 16
+6- Raccogliamo il lvl dalla tendina
+7- Calcolo in base al lvl scelto quante celle devo renderizzare
+8- Inserisco una variabile per contare il punteggio
+9- Calcolo in base al lvl le celle 'safe'
+10- Genero i numeri delle bombe
+11- Renderizzo la griglia (creo celle(assegno classe ecc))
+12- Aggiungo l'event listener alle celle
+
+| QUANDO UNA CELLA E' CLICCATA
+13- Controllo se è stata cliccata 
+? Return
+14-Controllo se è una bomba
+! SE SI : lancio il game over 'di sconfitta'
+? aggiungo alla lista delle cliccate(?)
+? rimuovo l'event listener (non è più cliccabile)
+15- Coloro la cella appropriatamente
+16- Incremento il punteggio
+17- Controllo se il punteggio è uguale ai MAX_ATTEMPTS
+! SE SI : lancio il game over 'di vittoria' 
+ 
+| AL GAME OVER
+18- Messaggio di vittoria se arriva game over 'win'
+19- Messaggio di sconfitta se arriva game over 'defeat'
+20- Coloro di rosso tutte le celle comprese nell'array delle bombe (BONUS)
+21- Rimuovo l'event listener da tutte le celle (BONUS)

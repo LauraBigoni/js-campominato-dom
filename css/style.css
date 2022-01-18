@@ -1,0 +1,37 @@
+* {
+    font-family: 'Indie Flower', cursive;
+}
+
+body {
+    background-color: #ffffe9;
+}
+
+#nav-menu {
+    background-color: #ffc3ff;
+    height: 70px;
+}
+
+#grid {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: whitesmoke;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#grid .cell {
+    cursor: pointer;
+    border: 1px solid rgb(66, 66, 66);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#grid .cell.safe {
+    background-color: lightblue;
+}
+
+#grid .cell.bomb {
+    background-color: rgb(255, 71, 71);
+}
