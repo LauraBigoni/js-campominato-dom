@@ -38,12 +38,14 @@ function play() {
     const TOTAL_BOMBS = 16 ;
     console.log(bomb);
     console.log(TOTAL_BOMBS);
+
+    const level = document.getElementById('level').value;
+    console.log(level);
 }
 
 
 
 // # RECUPERO GLI ELEMENTI
-const level = document.getElementById('level');
 const playButton = document.getElementById('play');
 const choice = document.getElementById('choice');
 const grid = document.getElementById('grid');
