@@ -18,7 +18,7 @@ BONUS:
 */
 
 // # FUNZIONI
-function getRandomNumber (min, max, list) {
+function getRandomNumber(min, max, list) {
     let randNumber;
     do {
         randNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -32,11 +32,11 @@ function play() {
 
     // Elimino il contenuto di grid
     grid.innerHTML = '';
-    
+
     // # FASE PREPARATIVA
     // Settare le bombe
-    const bomb = '💣' ;
-    const TOTAL_BOMBS = 16 ;
+    const bomb = '💣';
+    const TOTAL_BOMBS = 16;
     console.log(bomb);
     console.log(TOTAL_BOMBS);
 
@@ -50,24 +50,54 @@ function play() {
 
     switch (level) {
         case 'easy':
-        totalCells = 100; // 10
-        break;
+            totalCells = 100; // 10
+            break;
         case 'hard':
-        totalCells = 49; // 7
-        break;
+            totalCells = 49; // 7
+            break;
         default:
-        totalCells = 81; // 9
+            totalCells = 81; // 9
     }
-    
+
     // Radice quadrata per calcolare le celle
     cellsPerRow = Math.sqrt(totalCells);
     console.log(cellsPerRow);
 
-    // Calcolo il numero massimo di tentativi
+    // Inserisco una variabile per contare il punteggio
     const MAX_ATTEMPTS = totalCells - TOTAL_BOMBS;
 }
+function generateBombs(totalBombs, bomb) {
+    // Genero le bombe
+    const bombs = [];
+    while (bombs.lenght < totalBombs) {
+        const bomb = '💣';
+        bombs.push(bomb);
+    }
+    return bombs;
+}
 
+function generateGrid(cellsNumber, cellsPerRow, bombs) {
+    // Renderizzo la griglia eassegno la classe
+    for (let i = 1; i <= cellsNumber; i++) {
+        const cell = generateCell(i, cellsPerRow);
 
+        cell.addEventListener('click', (e) => onCellClick(e.target, bombs, i));
+
+        grid.appendChild(cell);
+    }
+}
+
+function generateCell(number, cellPerRow) {
+    // Genero le celle
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.innerHTML = number;
+    const sideLenght = `calc(100% / ${cellsPerRow})`;
+    cell.style.width = sideLenght;
+    cell.style.height = sideLenght;
+
+    return cell;
+}
 
 // # RECUPERO GLI ELEMENTI
 const playButton = document.getElementById('play');
